@@ -1,4 +1,4 @@
-CodeHeader = """from tools import tabtools, calculator
+CodeHeader = """from ./tools import tabtools, calculator
 Calculate = calculator.WolframAlphaCalculator
 LoadDB = tabtools.db_loader
 FilterDB = tabtools.data_filter

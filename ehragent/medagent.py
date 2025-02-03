@@ -52,16 +52,16 @@ class MedAgent(UserProxyAgent):
         sleep_time = 30
         openai.api_type = config["api_type"]
         openai.api_base = config["base_url"]
-        openai.api_version = config["api_version"]
+        # openai.api_version = config["api_version"]
         openai.api_key = config["api_key"]
         engine = config["model"]
         query_message = RetrKnowledge.format(question=query)
         messages = [{"role":"system","content":"You are an AI assistant that helps people find information."},
                     {"role":"user","content": query_message}]
-        client = AzureOpenAI(
+        client = OpenAI(
             api_key=config["api_key"],
-            azure_endpoint=config["base_url"],
-            api_version=config["api_version"],
+            # azure_endpoint=config["base_url"],
+            # api_version=config["api_version"],
         )
         while patience > 0:
             patience -= 1
@@ -114,7 +114,7 @@ class MedAgent(UserProxyAgent):
         return init_message
     
     def send(self, message: Union[Dict, str], recipient: Agent, request_reply: Optional[bool]=None, silent: Optional[bool]=False):
-        valid = self._append_oai_message(message, "assistant", recipient)
+        valid = self._append_oai_message(message, "assistant", recipient, is_sending=True)
         if valid:
             recipient.receive(message, self, request_reply, silent)
         else:
@@ -151,16 +151,16 @@ class MedAgent(UserProxyAgent):
         sleep_time = 30
         openai.api_type = config["api_type"]
         openai.api_base = config["base_url"]
-        openai.api_version = config["api_version"]
+        # openai.api_version = config["api_version"]
         openai.api_key = config["api_key"]
         engine = config["model"]
         query_message = CodeDebugger.format(question=self.question, code=code, error_info=error_info)
         messages = [{"role":"system","content":"You are an AI assistant that helps people debug their code. Only list one most possible reason to the errors."},
                     {"role":"user","content": query_message}]
-        client = AzureOpenAI(
+        client = OpenAI(
             api_key=config["api_key"],
-            azure_endpoint=config["base_url"],
-            api_version=config["api_version"],
+            # azure_endpoint=config["base_url"],
+            # api_version=config["api_version"],
         )
         while patience > 0:
             patience -= 1
@@ -183,14 +183,14 @@ class MedAgent(UserProxyAgent):
                     time.sleep(sleep_time)
         return "Fail to diagnose the reasons to the errors."
 
-    def execute_function(self, func_call):
+    def execute_function(self, func_call, call_id=None):
         """Execute a function call and return the result.
 
         Override this function to modify the way to execute a function call.
 
         Args:
             func_call: a dictionary extracted from openai message at key "function_call" with keys "name" and "arguments".
-
+            call_id: an optional argument used to track the function call.
         Returns:
             A tuple of (is_exec_success, result_dict).
             is_exec_success (boolean): whether the execution is successful.

@@ -77,7 +77,7 @@ def main():
         is_termination_msg=lambda x: x.get("content", "") and x.get("content", "").rstrip().endswith("TERMINATE"),
         human_input_mode="NEVER",
         max_consecutive_auto_reply=10,
-        code_execution_config={"work_dir": "coding"},
+        code_execution_config={"work_dir": "coding", "use_docker" : False},
         config_list=config_list,
     )
 
@@ -94,7 +94,6 @@ def main():
     # read from json file
     with open(file_path, 'r') as f:
         contents = json.load(f)
-
     # random shuffle
     import random
     random.shuffle(contents)
@@ -128,7 +127,6 @@ def main():
                 message=question,
             )
             logs = user_proxy._oai_messages
-
             logs_string = []
             logs_string.append(str(question))
             logs_string.append(str(answer))
@@ -143,9 +141,11 @@ def main():
                         else:
                             logs_string.append(argums)
         except Exception as e:
+            print(f"Exception : {e}")
             logs_string = [str(e)]
-        print(logs_string)
+        
         file_directory = file_path.format(id=contents[i]['id'])
+        os.makedirs(os.path.dirname(file_directory), exist_ok=True)
         # f = open(file_directory, 'w')
         if type(answer) == list:
             answer = ', '.join(answer)
