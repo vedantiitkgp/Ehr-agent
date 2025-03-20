@@ -2,8 +2,7 @@
 <h1> ⚕️EHRAgent🤖 </h1>
 </div>
 
-The official repository for the code of the paper ["EHRAgent: Code Empowers Large Language Models for Complex Tabular Reasoning on Electronic Health Records"](https://arxiv.org/abs/2401.07128). EHRAgent is an LLM agent empowered with a code interface, to autonomously generate and execute code for complex clinical tasks within electronic health records (EHRs). The project page is available at [this link](https://wshi83.github.io/EHR-Agent-page/).
-
+The official repository for the code of the paper ["EHRAgent: Code Empowers Large Language Models for Complex Tabular Reasoning on Electronic Health Records"](https://arxiv.org/abs/2401.07128). EHRAgent is an LLM agent empowered with a code interface, to autonomously generate and execute code for complex clinical tasks within electronic health records (EHRs).
 ### Features
 
 - EHRAgent is an LLM agent augmented with tools and medical knowledge, to solve complex tabular reasoning derived from EHRs;
